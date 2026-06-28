@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mc Builders - The Ultimate Minecraft Build Ranking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mcb: {
+                            bg: '#0B0F14',
+                            card: '#151B22',
+                            accent: '#00C8FF',
+                            grayLight: '#E2E8F0',
+                            grayDark: '#64748B',
+                            tierSPlus: '#FF4554',
+                            tierS: '#FF7676',
+                            tierA: '#FFAA47',
+                            tierB: '#FFD347',
+                            tierC: '#47FF76',
+                            tierD: '#47C2FF',
+                            tierF: '#A3A3A3',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0F14;
+            color: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(21, 27, 34, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-premium {
+            background: linear-gradient(135deg, rgba(21, 27, 34, 0.8) 0%, rgba(11, 15, 20, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 200, 255, 0.15);
+        }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(11, 15, 24, 0.5), #0B0F14), url('https://images.unsplash.com/photo-1607988795691-3d0147b43231?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #151B22;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00C8FF;
+        }
+        .nav-link-active {
+            color: #00C8FF;
+            border-bottom: 2px solid #00C8FF;
+        }
+        .tier-badge {
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 px-4 lg:px-8 py-3 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Logo & Brand -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-9 h-9 bg-gradient-to-tr from-mcb-accent to-blue-500 rounded-xl flex items-center justify-center font-black text-xl text-mcb-bg shadow-lg shadow-mcb-accent/20">
+                    M
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Mc</span>
+                    <span class="text-xl font-extrabold tracking-tight text-mcb-accent">Builders</span>
+                </div>
+            </div>
+
+            <!-- Central Nav Links -->
+            <div class="hidden md:flex items-center space-x-1 font-medium text-sm text-slate-400">
+                <button id="nav-home" onclick="switchTab('home')" class="px-4 py-2 rounded-lg hover:text-white transition navigation-item nav-link-active">Home</button>
+                <button id="nav-rankings" onclick="switchTab('rankings')" class="px-4 py-2 rounded-lg hover:text-white transition navigation-item">Rankings</button>
+                <button id="nav-builders" onclick="switchTab('builders')" class="px-4 py-2 rounded-lg hover:text-white transition navigation-item">Builders</button>
+                <button id="nav-submit" onclick="switchTab('submit')" class="px-4 py-2 rounded-lg hover:text-white transition navigation-item text-mcb-accent font-semibold"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>Submit Build</button>
+                <a href="https://discord.gg" target="_blank" class="px-4 py-2 rounded-lg hover:text-[#5865F2] transition flex items-center"><i class="fa-brands fa-discord mr-1.5"></i>Discord</a>
+            </div>
+
+            <!-- Right Actions (Search & User Profile Mock) -->
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block w-48 lg:w-64">
+                    <input type="text" placeholder="Search builds, builders..." class="w-full bg-[#0D1117] text-xs border border-white/10 rounded-xl py-2 pl-9 pr-4 focus:outline-none focus:border-mcb-accent text-slate-200 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                </div>
+                
+                <!-- User State Control Mock -->
+                <button onclick="switchTab('admin')" class="text-slate-400 hover:text-white transition text-sm p-2 bg-white/5 rounded-lg border border-white/5" title="Admin Dashboard">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
+
+                <div class="flex items-center space-x-2 cursor-pointer border-l border-white/10 pl-4" onclick="switchTab('profile')">
+                    <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Steve" class="w-8 h-8 rounded-lg bg-mcb-card p-0.5 border border-mcb-accent/40 shadow-sm shadow-mcb-accent/10" alt="Avatar">
+                    <span class="hidden md:block text-xs font-semibold text-slate-200">Notch_Legacy</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT CONTAINERS -->
+    <main class="flex-grow">
+        
+        <!-- ==================== TAB: HOME ==================== -->
+        <section id="tab-home" class="tab-content block">
+            <!-- Hero Banner -->
+            <div class="hero-bg relative min-h-[500px] flex items-center justify-center text-center px-4 py-20">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-mcb-bg/80 to-mcb-bg"></div>
+                <div class="relative z-10 max-w-3xl mx-auto">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full glass border-white/10 text-xs text-mcb-accent font-semibold mb-6 shadow-xl animate-pulse">
+                        <span class="w-2 h-2 rounded-full bg-mcb-accent"></span>
+                        <span>SEASON 2 IS LIVE &bull; COMPETITIVE BUILD RANKING</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-4">
+                        The Ultimate Minecraft <br><span class="bg-gradient-to-r from-mcb-accent to-blue-400 bg-clip-text text-transparent">Build Ranking</span>
+                    </h1>
+                    <p class="text-slate-400 text-sm sm:text-lg max-w-xl mx-auto mb-8 font-medium">
+                        Discover elite architectural marvels, explore verified builder rankings, and submit your builds to climb the definitive competitive global standard tiers.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button onclick="switchTab('rankings')" class="w-full sm:w-auto px-8 py-3.5 bg-mcb-accent text-mcb-bg font-extrabold rounded-xl shadow-lg shadow-mcb-accent/20 hover:scale-[1.02] transition active:scale-[0.98]">
+                            Explore Rankings <i class="fa-solid fa-compass ml-1.5"></i>
+                        </button>
+                        <button onclick="switchTab('submit')" class="w-full sm:w-auto px-8 py-3.5 glass border-white/10 hover:bg-white/5 font-bold rounded-xl transition">
+                            Submit a Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Row -->
+            <div class="max-w-7xl mx-auto px-4 lg:px-8 -mt-12 relative z-20 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                    <div class="w-12 h-12 rounded-xl bg-mcb-accent/10 flex items-center justify-center text-mcb-accent text-xl"><i class="fa-solid fa-fort-awesome"></i></div>
+                    <div><div class="text-2xl font-black">14,204</div><div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Total Builds</div></div>
+                </div>
+                <div class="glass p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                    <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-xl"><i class="fa-solid fa-users"></i></div>
+                    <div><div class="text-2xl font-black">42,910</div><div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Registered</div></div>
+                </div>
+                <div class="glass p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl"><i class="fa-solid fa-star"></i></div>
+                    <div><div class="text-2xl font-black">528K</div><div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Votes Cast</div></div>
+                </div>
+                <div class="glass p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl"><i class="fa-solid fa-trophy"></i></div>
+                    <div><div class="text-2xl font-black">#1 Grian</div><div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Top Builder</div></div>
+                </div>
+            </div>
+
+            <!-- Build of the Week & Trending Section -->
+            <div class="max-w-7xl mx-auto px-4 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Build of the Week -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-extrabold tracking-tight flex items-center"><i class="fa-solid fa-crown text-amber-400 mr-2"></i> Build of the Week</h2>
+                        <span class="text-xs bg-amber-400/10 text-amber-400 font-bold px-2.5 py-1 rounded-md border border-amber-400/20">Featured</span>
+                    </div>
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl group border border-white/5 cursor-pointer" onclick="openBuildDetail()">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop" class="w-full h-[360px] object-cover group-hover:scale-105 transition duration-700" alt="Build of the week">
+                        <div class="absolute inset-0 bg-gradient-to-t from-mcb-bg via-mcb-bg/40 to-transparent"></div>
+                        <div class="absolute top-4 right-4 bg-mcb-tierSPlus text-white font-black px-4 py-1.5 rounded-xl tier-badge text-sm">S+ TIER</div>
+                        <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                            <div>
+                                <span class="text-xs font-bold text-mcb-accent uppercase tracking-wider bg-mcb-accent/10 px-2.5 py-1 rounded-md border border-mcb-accent/20">🏰 Medieval</span>
+                                <h3 class="text-2xl font-black tracking-tight mt-2 text-white">Eldoria Royal Citadel</h3>
+                                <p class="text-xs text-slate-300 mt-1">By <span class="font-bold text-white">Aurelius_Builds</span> &bull; Version 1.20.4 &bull; <i class="fa-solid fa-star text-amber-400"></i> 9.8 (1,420 votes)</p>
+                            </div>
+                            <button class="bg-white text-mcb-bg font-extrabold px-5 py-2.5 rounded-xl shadow-lg hover:bg-mcb-accent hover:text-mcb-bg transition text-xs whitespace-nowrap">View Build</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending / Side Panel -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-extrabold tracking-tight flex items-center"><i class="fa-solid fa-fire text-red-500 mr-2"></i> Trending Now</h2>
+                    <div class="space-y-3">
+                        <div class="bg-mcb-card/40 hover:bg-mcb-card/70 border border-white/5 rounded-2xl p-3 flex items-center space-x-3 transition cursor-pointer" onclick="openBuildDetail()">
+                            <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=150&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover" alt="Thumb">
+                            <div class="flex-grow min-w-0">
+                                <div class="flex items-center justify-between"><span class="text-[10px] font-bold text-slate-400 uppercase">🏙 Modern</span> <span class="text-mcb-tierS font-black text-xs">S Tier</span></div>
+                                <h4 class="font-bold text-sm text-white truncate mt-0.5">Cyberpunk Neo-Tokyo</h4>
+                                <p class="text-[11px] text-slate-400 truncate">By ElysiumMaps &bull; 9.4</p>
+                            </div>
+                        </div>
+                        <div class="bg-mcb-card/40 hover:bg-mcb-card/70 border border-white/5 rounded-2xl p-3 flex items-center space-x-3 transition cursor-pointer" onclick="openBuildDetail()">
+                            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=150&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover" alt="Thumb">
+                            <div class="flex-grow min-w-0">
+                                <div class="flex items-center justify-between"><span class="text-[10px] font-bold text-slate-400 uppercase">🌸 Japanese</span> <span class="text-mcb-tierA font-black text-xs">A Tier</span></div>
+                                <h4 class="font-bold text-sm text-white truncate mt-0.5">Kyoto Shinto Shrine</h4>
+                                <p class="text-[11px] text-slate-400 truncate">By Kenji_MC &bull; 8.9</p>
+                            </div>
+                        </div>
+                        <div class="bg-mcb-card/40 hover:bg-mcb-card/70 border border-white/5 rounded-2xl p-3 flex items-center space-x-3 transition cursor-pointer" onclick="openBuildDetail()">
+                            <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=150&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover" alt="Thumb">
+                            <div class="flex-grow min-w-0">
+                                <div class="flex items-center justify-between"><span class="text-[10px] font-bold text-slate-400 uppercase">🌌 Sci-Fi</span> <span class="text-mcb-tierS font-black text-xs">S Tier</span></div>
+                                <h4 class="font-bold text-sm text-white truncate mt-0.5">Aetherius Void Station</h4>
+                                <p class="text-[11px] text-slate-400 truncate">By VoidX &bull; 9.2</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Season Info Card Box -->
+                    <div class="glass-premium rounded-2xl p-4 border border-mcb-accent/20">
+                        <div class="text-xs font-bold text-mcb-accent tracking-wider uppercase mb-1">Season 2 Progress</div>
+                        <div class="text-sm font-extrabold text-white">Active Season: Architects of Eldoria</div>
+                        <div class="text-xs text-slate-400 mt-1 mb-3">Ends in 24 days. Top 10 builders secure the Elite Crown Medal.</div>
+                        <div class="w-full bg-[#0D1117] h-2 rounded-full overflow-hidden"><div class="bg-gradient-to-r from-mcb-accent to-blue-500 h-full w-[65%] rounded-full"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Categories Grid Showcase -->
+            <div class="max-w-7xl mx-auto px-4 lg:px-8 py-4 mb-16">
+                <h2 class="text-xl font-extrabold tracking-tight mb-6 flex items-center"><i class="fa-solid fa-shapes text-mcb-accent mr-2"></i> Browse Categories</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="categories-showcase">
+                    <!-- Dynamic rendering simulation -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: RANKINGS / CATALOG ==================== -->
+        <section id="tab-rankings" class="tab-content hidden max-w-7xl mx-auto px-4 lg:px-8 py-10">
+            <!-- Filter, Search and Order Controls Structure -->
+            <div class="glass p-6 rounded-2xl border border-white/5 space-y-4 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="md:col-span-2 relative">
+                        <input type="text" id="filter-search" placeholder="Search by name, builder, or version..." class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl py-3 pl-11 pr-4 focus:outline-none focus:border-mcb-accent text-slate-200 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <select id="filter-category" onchange="applyFilters()" class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-300 transition">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="filter-sort" onchange="applyFilters()" class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-300 transition">
+                            <option value="rating">Highest Rating</option>
+                            <option value="votes">Most Voted</option>
+                            <option value="recent">Most Recent</option>
+                            <option value="views">Most Viewed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier Header Navigation View Blocks -->
+            <div class="space-y-12" id="rankings-tier-container">
+                <!-- Tier Lists will render automatically via JS script loop -->
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: BUILD DETAIL PAGE ==================== -->
+        <section id="tab-build-detail" class="tab-content hidden max-w-7xl mx-auto px-4 lg:px-8 py-10">
+            <!-- Back button -->
+            <button onclick="switchTab('rankings')" class="mb-6 inline-flex items-center space-x-2 text-xs font-bold text-slate-400 hover:text-mcb-accent transition">
+                <i class="fa-solid fa-arrow-left"></i> <span>Back to Rankings</span>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main gallery and Info description -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-mcb-card border border-white/5">
+                        <img id="detail-main-img" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop" class="w-full h-[450px] object-cover" alt="Main View">
+                        <div class="absolute top-4 right-4 bg-mcb-tierSPlus text-white font-black px-4 py-2 rounded-xl text-lg tracking-wider" id="detail-tier">S+ TIER</div>
+                    </div>
+                    <!-- Thumbnails Subgallery row -->
+                    <div class="grid grid-cols-4 gap-3">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=300&auto=format&fit=crop" onclick="document.getElementById('detail-main-img').src=this.src" class="h-20 w-full object-cover rounded-xl border border-white/10 hover:border-mcb-accent transition cursor-pointer" alt="T1">
+                        <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=300&auto=format&fit=crop" onclick="document.getElementById('detail-main-img').src=this.src" class="h-20 w-full object-cover rounded-xl border border-white/10 hover:border-mcb-accent transition cursor-pointer" alt="T2">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=300&auto=format&fit=crop" onclick="document.getElementById('detail-main-img').src=this.src" class="h-20 w-full object-cover rounded-xl border border-white/10 hover:border-mcb-accent transition cursor-pointer" alt="T3">
+                        <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=300&auto=format&fit=crop" onclick="document.getElementById('detail-main-img').src=this.src" class="h-20 w-full object-cover rounded-xl border border-white/10 hover:border-mcb-accent transition cursor-pointer" alt="T4">
+                    </div>
+
+                    <!-- Metadata Header Info description block -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-bold text-mcb-accent tracking-wider uppercase" id="detail-category">Medieval</span>
+                                <h2 class="text-3xl font-black text-white tracking-tight mt-1" id="detail-title">Eldoria Royal Citadel</h2>
+                                <p class="text-xs text-slate-400 mt-1">Submitted on June 15, 2026 &bull; <i class="fa-solid fa-eye"></i> 12,402 views</p>
+                            </div>
+                            <!-- Share Link Actions -->
+                            <div class="flex items-center space-x-2">
+                                <button onclick="alert('Link copied to clipboard!')" class="p-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-slate-300 transition" title="Copy Share Link"><i class="fa-solid fa-share-nodes"></i></button>
+                                <button onclick="alert('Added to Favorites!')" class="p-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-pink-500 transition" title="Favorite"><i class="fa-solid fa-heart"></i></button>
+                            </div>
+                        </div>
+                        <hr class="border-white/5">
+                        <h4 class="font-bold text-sm text-white">Project Description</h4>
+                        <p class="text-sm text-slate-400 leading-relaxed" id="detail-desc">
+                            This monumental citadel represents over 120 hours of manual voxel placement. Built entirely from structural stone bricks, spruce pillars, and deepslate accents, the castle towers above a custom terraformed valley. Features a fully furnished throne room, detailed defensive ramparts, dungeon quarters, and an intricate underground drainage catacomb system.
+                        </p>
+                    </div>
+
+                    <!-- Comments Engine Section -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 space-y-6">
+                        <h3 class="text-lg font-bold text-white flex items-center"><i class="fa-solid fa-comments text-mcb-accent mr-2"></i> Discussion Portal</h3>
+                        <!-- Add Comment Input Area -->
+                        <div class="flex space-x-3 items-start">
+                            <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Steve" class="w-9 h-9 rounded-lg bg-mcb-card border border-white/10 mt-1" alt="avatar">
+                            <div class="flex-grow space-y-2">
+                                <textarea placeholder="Add a professional build critique comment..." class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent min-h-[80px] text-slate-200"></textarea>
+                                <button onclick="alert('Comment sent successfully!')" class="px-5 py-2 bg-mcb-accent text-mcb-bg font-bold text-xs rounded-xl shadow-md transition hover:scale-105">Post Comment</button>
+                            </div>
+                        </div>
+                        <!-- Dummy comments feed thread -->
+                        <div class="space-y-4 pt-4 border-t border-white/5">
+                            <div class="flex space-x-3 items-start text-sm">
+                                <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Alex" class="w-8 h-8 rounded-lg bg-mcb-card" alt="avatar">
+                                <div class="flex-grow space-y-1 bg-white/5 p-3.5 rounded-xl border border-white/5">
+                                    <div class="flex items-center justify-between"><span class="font-bold text-white">VoxelMaster_99</span><span class="text-[10px] text-slate-500">2 hours ago</span></div>
+                                    <p class="text-slate-300 text-xs">The attention to depth on the wall buttresses is unbelievable! Truly an exquisite piece of architecture worthy of S+ status.</p>
+                                    <div class="flex items-center space-x-4 text-[11px] text-slate-500 pt-1.5"><button class="hover:text-mcb-accent"><i class="fa-solid fa-thumbs-up mr-1"></i> 24</button><button class="hover:text-white">Reply</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Structural Build Sidebar Specifications info data -->
+                <div class="space-y-6">
+                    <!-- Voting widget score -->
+                    <div class="glass-premium p-6 rounded-2xl border border-mcb-accent/20 space-y-4">
+                        <div class="text-center">
+                            <div class="text-xs uppercase font-extrabold text-mcb-accent tracking-widest">Global Score Rating</div>
+                            <div class="text-5xl font-black text-white mt-1" id="detail-score">9.8</div>
+                            <div class="text-xs text-slate-400 mt-1" id="detail-votes">Based on 1,420 user validations</div>
+                        </div>
+                        <hr class="border-white/5">
+                        <!-- Voting selector interactive element -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 text-center uppercase mb-2">Cast Your Rating Vote (1-10)</label>
+                            <div class="grid grid-cols-5 gap-1.5">
+                                <button onclick="alert('Thank you for voting!')" class="py-2 rounded-lg bg-mcb-bg text-xs font-bold border border-white/5 hover:border-mcb-accent transition hover:bg-mcb-accent/10">6</button>
+                                <button onclick="alert('Thank you for voting!')" class="py-2 rounded-lg bg-mcb-bg text-xs font-bold border border-white/5 hover:border-mcb-accent transition hover:bg-mcb-accent/10">7</button>
+                                <button onclick="alert('Thank you for voting!')" class="py-2 rounded-lg bg-mcb-bg text-xs font-bold border border-white/5 hover:border-mcb-accent transition hover:bg-mcb-accent/10">8</button>
+                                <button onclick="alert('Thank you for voting!')" class="py-2 rounded-lg bg-mcb-bg text-xs font-bold border border-white/5 hover:border-mcb-accent transition hover:bg-mcb-accent/10 text-mcb-accent">9</button>
+                                <button onclick="alert('Thank you for voting!')" class="py-2 rounded-lg bg-mcb-bg text-xs font-bold border border-mcb-accent/30 hover:border-mcb-accent transition bg-mcb-accent/5 text-mcb-accent">10</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tech specs technical criteria table -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                        <h3 class="font-extrabold text-sm uppercase text-slate-300 tracking-wider">Specifications</h3>
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Primary Builder:</span><span class="font-bold text-white cursor-pointer hover:text-mcb-accent" onclick="switchTab('profile')" id="detail-builder">Aurelius_Builds</span></div>
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Minecraft Version:</span><span class="font-bold text-slate-200" id="detail-version">1.20.4</span></div>
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Map Scale Size:</span><span class="font-bold text-slate-200">500 x 500 Blocks</span></div>
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Shaders Profile:</span><span class="font-bold text-mcb-accent">BSL Shaders v8.2</span></div>
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Texture Pack:</span><span class="font-bold text-slate-200">Faithful 64x64</span></div>
+                            <div class="flex justify-between py-1.5 border-b border-white/5"><span class="text-slate-400">Download Availability:</span><span class="font-bold text-emerald-400"><i class="fa-solid fa-circle-check"></i> Schem & World Save</span></div>
+                        </div>
+                        <button onclick="alert('Starting secure download mirror...')" class="w-full mt-4 py-3 bg-white/5 border border-white/10 hover:border-mcb-accent hover:bg-mcb-accent/10 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-download text-mcb-accent"></i> <span>Download Schematic Map</span>
+                        </button>
+                        <button onclick="alert('Report submitted for moderation assessment.')" class="w-full py-2 text-[10px] uppercase tracking-wider text-slate-500 hover:text-red-400 transition font-bold text-center">
+                            <i class="fa-solid fa-flag mr-1"></i> Report Structural Infraction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: LEADERS / BUILDERS ==================== -->
+        <section id="tab-builders" class="tab-content hidden max-w-7xl mx-auto px-4 lg:px-8 py-10">
+            <div class="mb-8">
+                <h2 class="text-3xl font-black tracking-tight text-white">World Builder Rankings</h2>
+                <p class="text-sm text-slate-400 mt-1">Definitive leaderboard rank calculated by verified build scores, submission ratios and elite peer valuations.</p>
+            </div>
+
+            <!-- Builders Leaderboard Table View -->
+            <div class="glass rounded-2xl border border-white/5 overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-white/10 bg-white/5 text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                                <th class="p-4 text-center w-20">Rank</th>
+                                <th class="p-4">Builder Profile</th>
+                                <th class="p-4 text-center">Total Submissions</th>
+                                <th class="p-4 text-center">Global Avg Rating</th>
+                                <th class="p-4 text-center">Total Validations</th>
+                                <th class="p-4">Distinguished Medals</th>
+                            </tr>
+                        </thead>
+                        <tbody id="builders-leaderboard-body" class="text-sm text-slate-300 divide-y divide-white/5">
+                            <!-- Injected programmatically by setup script -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: USER PROFILE DOCK ==================== -->
+        <section id="tab-profile" class="tab-content hidden max-w-7xl mx-auto px-4 lg:px-8 py-10">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- User Left Card Summary -->
+                <div class="glass p-6 rounded-3xl border border-white/5 text-center space-y-4 h-fit">
+                    <div class="relative w-24 h-24 mx-auto">
+                        <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Steve" class="w-full h-full rounded-2xl bg-mcb-card p-1 border-2 border-mcb-accent shadow-xl" alt="Avatar">
+                        <div class="absolute -bottom-2 -right-2 bg-amber-400 text-mcb-bg rounded-lg p-1 text-[10px] font-black tracking-wide shadow-md"><i class="fa-solid fa-award"></i> TOP 10</div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-white tracking-tight">Notch_Legacy</h3>
+                        <p class="text-xs text-mcb-accent font-semibold mt-0.5">Ranked global #7 &bull; Season Veteran</p>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Professional voxel landscape designer and schematic engineering hobbyist. Specializing in high-fantasy architecture and Roman structural aqueducts.
+                    </p>
+                    <div class="flex items-center justify-center space-x-3 text-slate-400 text-sm">
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                    <hr class="border-white/5">
+                    <!-- Medals badges grid layout -->
+                    <div class="text-left space-y-2">
+                        <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Earned Conquistas</span>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-amber-400/10 text-amber-400 text-[10px] font-black px-2.5 py-1 rounded-md border border-amber-400/20" title="Master Builder Medal">🥇 Master Builder</span>
+                            <span class="bg-red-400/10 text-red-400 text-[10px] font-black px-2.5 py-1 rounded-md border border-red-400/20" title="Trending Build Badge">🔥 Trending</span>
+                            <span class="bg-purple-400/10 text-purple-400 text-[10px] font-black px-2.5 py-1 rounded-md border border-purple-400/20" title="Legendary Tier Badge">⭐ Legendary</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Right Content tabs subview -->
+                <div class="lg:col-span-3 space-y-6">
+                    <div class="border-b border-white/10 flex space-x-6 text-sm font-semibold text-slate-400">
+                        <button class="pb-3 text-white border-b-2 border-mcb-accent">My Creative Submissions (3)</button>
+                        <button class="pb-3 hover:text-white transition">Bookmarked Favorites</button>
+                        <button class="pb-3 hover:text-white transition">Activity Logs</button>
+                    </div>
+
+                    <!-- Grid list of builds submitted by user -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="user-builds-grid">
+                        <!-- Reuses structural component design -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: SUBMIT FORM ARTIFACT ==================== -->
+        <section id="tab-submit" class="tab-content hidden max-w-3xl mx-auto px-4 py-10">
+            <div class="glass p-8 rounded-3xl border border-white/5 space-y-6 shadow-2xl">
+                <div>
+                    <h2 class="text-2xl font-black text-white tracking-tight flex items-center"><i class="fa-solid fa-cloud-arrow-up text-mcb-accent mr-3"></i>Submit Architectural Project</h2>
+                    <p class="text-xs text-slate-400 mt-1">All submissions go through rigorous community peer validation processing algorithms before placement into official competitive global tier tracks.</p>
+                </div>
+                <hr class="border-white/5">
+
+                <form class="space-y-4" onsubmit="alert('Build submitted for modular algorithmic review processing!'); switchTab('home'); return false;">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Project Title</label>
+                            <input type="text" placeholder="e.g. Imperial Floating Pagoda" required class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Primary Category Category</label>
+                            <select id="submit-category" required class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-300">
+                                <!-- Categorization options injected by JS framework setup -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Minecraft Native Version</label>
+                            <input type="text" placeholder="e.g. 1.20.4" required class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Shaders Configuration</label>
+                            <input type="text" placeholder="e.g. Complementary Unbound" class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Texture Pack Component</label>
+                            <input type="text" placeholder="e.g. Default Variant" class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Detailed Summary Description</label>
+                        <textarea placeholder="Outline historical lore, block count specifications, and building techniques utilized..." required class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent min-h-[120px] text-slate-200"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Image Asset Hyperlinks (Comma separated URLs)</label>
+                        <input type="text" placeholder="https://unsplash.com/..., https://imgur.com/..." class="w-full bg-mcb-bg text-sm border border-white/10 rounded-xl p-3 focus:outline-none focus:border-mcb-accent text-slate-200">
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full py-4 bg-mcb-accent text-mcb-bg font-extrabold text-sm rounded-xl shadow-lg shadow-mcb-accent/20 transition hover:scale-[1.01]">
+                            Dispatch Structural Evaluation Request <i class="fa-solid fa-paper-plane ml-1"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- ==================== TAB: ADMINISTRATIVE PRIVILEGE DASHBOARD ==================== -->
+        <section id="tab-admin" class="tab-content hidden max-w-7xl mx-auto px-4 lg:px-8 py-10">
+            <div class="mb-8">
+                <h2 class="text-3xl font-black tracking-tight text-white flex items-center"><i class="fa-solid fa-sliders text-mcb-accent mr-3"></i>Administrative Command Complex</h2>
+                <p class="text-sm text-slate-400 mt-1">Real-time application infrastructure configuration data, algorithmic metric feeds, and active moderator control suites.</p>
+            </div>
+
+            <!-- Stats dashboard grid dashboard metric matrices -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-[#1A2332]/40 border border-blue-500/20 p-5 rounded-2xl">
+                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Pending Ticket Pipeline</div>
+                    <div class="text-3xl font-black text-blue-400 mt-1">42 Projects</div>
+                    <div class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-clock"></i> Average resolution queue: 3.4h</div>
+                </div>
+                <div class="bg-[#241E1A]/40 border border-amber-500/20 p-5 rounded-2xl">
+                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Report Pipeline Flags</div>
+                    <div class="text-3xl font-black text-amber-500 mt-1">7 Infractions</div>
+                    <div class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Requiring immediate panel review</div>
+                </div>
+                <div class="bg-[#162822]/40 border border-emerald-500/20 p-5 rounded-2xl">
+                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Server API Performance</div>
+                    <div class="text-3xl font-black text-emerald-400 mt-1">99.98%</div>
+                    <div class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-bolt"></i> Global node runtime latency: 14ms</div>
+                </div>
+                <div class="bg-[#241A22]/40 border border-purple-500/20 p-5 rounded-2xl">
+                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider">Active Season Database</div>
+                    <div class="text-3xl font-black text-purple-400 mt-1">Season 2</div>
+                    <div class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-database"></i> Schema engine healthy</div>
+                </div>
+            </div>
+
+            <!-- Management splits panel views -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h3 class="font-extrabold text-base text-white">Active Operational Moderation Stream</h3>
+                    <div class="divide-y divide-white/5 text-xs">
+                        <div class="flex justify-between items-center py-3">
+                            <div>
+                                <span class="font-bold text-white">User Ban Request</span>
+                                <p class="text-slate-400 text-[11px] mt-0.5">Target: GriefBuilds_66 &bull; Reason: Plagiarism schematic map capture</p>
+                            </div>
+                            <div class="space-x-2"><button onclick="alert('Action authorized')" class="bg-red-500 text-white font-bold px-2.5 py-1 rounded">Approve Ban</button><button onclick="this.parentElement.parentElement.remove()" class="bg-white/5 text-slate-400 px-2.5 py-1 rounded">Dismiss</button></div>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <div>
+                                <span class="font-bold text-white">Category Injection Stream</span>
+                                <p class="text-slate-400 text-[11px] mt-0.5">Request: Add Cyberpunk theme category listing</p>
+                            </div>
+                            <div class="space-x-2"><button onclick="alert('Category generated')" class="bg-mcb-accent text-mcb-bg font-bold px-2.5 py-1 rounded">Inject</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h3 class="font-extrabold text-base text-white">System Logs Overview</h3>
+                    <div class="bg-[#070A0E] rounded-xl p-4 font-mono text-[11px] text-slate-400 space-y-2 h-48 overflow-y-auto">
+                        <div>[19:42:04] JWT Auth Validation node-02 success.</div>
+                        <div>[19:45:12] DB Connection pool refresh active.</div>
+                        <div>[19:50:29] Metric sync: Updated Elo score array index.</div>
+                        <div>[19:52:00] CRON: Reordered rank tables for 15 categories.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- COMPREHENSIVE PLATFORM FOOTER ARTIFACT -->
+    <footer class="glass border-t border-white/5 py-12 px-4 lg:px-8 mt-20 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 bg-mcb-accent text-mcb-bg rounded-lg flex items-center justify-center font-black text-base">M</div>
+                    <span class="text-base font-extrabold tracking-tight text-white">Mc Builders</span>
+                </div>
+                <p class="leading-relaxed">
+                    The premium independent community index for competitive Minecraft architectural scoring assessment, rankings and source schemas.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-300 mb-3 uppercase tracking-wider text-[11px]">Platform Core</h4>
+                <ul class="space-y-2 font-medium">
+                    <li><a href="#" onclick="switchTab('rankings')" class="hover:text-mcb-accent transition">Ranked Tiers List</a></li>
+                    <li><a href="#" onclick="switchTab('builders')" class="hover:text-mcb-accent transition">Global Leaderboard</a></li>
+                    <li><a href="#" onclick="switchTab('submit')" class="hover:text-mcb-accent transition">Submit Architecture</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-300 mb-3 uppercase tracking-wider text-[11px]">Community Ecosystem</h4>
+                <ul class="space-y-2 font-medium">
+                    <li><a href="https://discord.gg" target="_blank" class="hover:text-mcb-accent transition">Official Discord Server</a></li>
+                    <li><a href="#" class="hover:text-mcb-accent transition">Community Forum Hub</a></li>
+                    <li><a href="#" class="hover:text-mcb-accent transition">Builder Guidelines</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-300 mb-3 uppercase tracking-wider text-[11px]">Compliance & Legal</h4>
+                <ul class="space-y-2 font-medium">
+                    <li><a href="#" class="hover:text-mcb-accent transition">Terms of Protocol</a></li>
+                    <li><a href="#" class="hover:text-mcb-accent transition">Privacy Framework</a></li>
+                    <li class="pt-2 text-[10px] leading-relaxed text-slate-600">Not affiliated with Mojang Studios or Microsoft Corporation.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-white/5 mt-8 pt-6 text-center flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>&copy; 2026 Mc Builders Engine Suite &bull; All Rights Reserved.</div>
+            <div class="flex items-center space-x-2 text-slate-400"><i class="fa-solid fa-shield-halved text-mcb-accent"></i> <span class="font-bold">Production Node Secure</span></div>
+        </div>
+    </footer>
+
+    <!-- APPLICATION FRONTEND ENGINE SCRIPT ARTIFACT -->
+    <script>
+        // Mock Categories Database Object Array Matrix
+        const categories = [
+            { id: "medieval", label: "Medieval", emoji: "🏰" },
+            { id: "modern", label: "Modern", emoji: "🏙" },
+            { id: "japanese", label: "Japanese", emoji: "🌸" },
+            { id: "fantasy", label: "Fantasy", emoji: "🕌" },
+            { id: "roman", label: "Roman", emoji: "🏛" },
+            { id: "nature", label: "Nature", emoji: "🌲" },
+            { id: "desert", label: "Desert", emoji: "🏜" },
+            { id: "snow", label: "Snow", emoji: "❄" },
+            { id: "tropical", label: "Tropical", emoji: "🏝" },
+            { id: "castle", label: "Castle", emoji: "🏰" },
+            { id: "survival", label: "Survival Houses", emoji: "🏡" },
+            { id: "pvp", label: "PvP Arenas", emoji: "⚔" },
+            { id: "spawn", label: "Spawn", emoji: "🎮" },
+            { id: "shops", label: "Shops", emoji: "🛒" },
+            { id: "scifi", label: "Sci-Fi", emoji: "🌌" }
+        ];
+
+        // Mock Tier Matrix Specs
+        const tiers = [
+            { name: "S+", colorClass: "text-mcb-tierSPlus bg-mcb-tierSPlus/10 border-mcb-tierSPlus/20" },
+            { name: "S", colorClass: "text-mcb-tierS bg-mcb-tierS/10 border-mcb-tierS/20" },
+            { name: "A", colorClass: "text-mcb-tierA bg-mcb-tierA/10 border-mcb-tierA/20" },
+            { name: "B", colorClass: "text-mcb-tierB bg-mcb-tierB/10 border-mcb-tierB/20" },
+            { name: "C", colorClass: "text-mcb-tierC bg-mcb-tierC/10 border-mcb-tierC/20" },
+            { name: "D", colorClass: "text-mcb-tierD bg-mcb-tierD/10 border-mcb-tierD/20" },
+            { name: "F", colorClass: "text-mcb-tierF bg-mcb-tierF/10 border-mcb-tierF/20" }
+        ];
+
+        // Mock Builds Data Model Matrix
+        const builds = [
+            { id: 1, title: "Eldoria Royal Citadel", builder: "Aurelius_Builds", tier: "S+", score: 9.8, category: "medieval", version: "1.20.4", votes: 1420, img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop", desc: "Monolithic fortress layout structure showcasing historical medieval masonry work layout with complete inner modular room formatting structures." },
+            { id: 2, title: "Neo Tokyo Cyber-Grid", builder: "ElysiumMaps", tier: "S", score: 9.4, category: "scifi", version: "1.20.2", votes: 980, img: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=600&auto=format&fit=crop", desc: "Cyberpunk neon landscape build containing complex lighting relays, detailed skyscrapers and modular subway system configurations." },
+            { id: 3, title: "Kyoto Shinto Pagoda Complex", builder: "Kenji_MC", tier: "A", score: 8.9, category: "japanese", version: "1.19.4", votes: 754, img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop", desc: "Authentic Edo-period representation showcasing curved organic tiling methodologies, cherry blossom groves, and meditation court structures." },
+            { id: 4, title: "Aetherius Obsidian Hub", builder: "VoidX", tier: "S", score: 9.2, category: "scifi", version: "1.20.4", votes: 1102, img: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=600&auto=format&fit=crop", desc: "Mega community spawn complex floating suspended in the center of an custom generated deep void galactic skybox context." },
+            { id: 5, title: "Solaria Desert Outpost", builder: "Sahara_Builds", tier: "B", score: 7.9, category: "desert", version: "1.20.1", votes: 412, img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop", desc: "Compact sandstone trading cluster featuring functional item elevators, custom biome palm layouts, and stylized dynamic canopies." },
+            { id: 6, title: "Notch Monument Plaza", builder: "Notch_Legacy", tier: "S", score: 9.5, category: "castle", version: "1.20.4", votes: 1250, img: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=600&auto=format&fit=crop", desc: "Massive scale monument architecture block configurations built directly into mountain face parameters." }
+        ];
+
+        // Mock Builders Database Model Array Matrix
+        const builders = [
+            { name: "Aurelius_Builds", subs: 24, score: 9.6, votes: 8402, position: 1, avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Aurelius", medals: ["🥇 Master Builder", "💎 Elite"] },
+            { name: "Notch_Legacy", subs: 18, score: 9.5, votes: 7120, position: 2, avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Steve", medals: ["🏆 Top 10", "⭐ Legendary"] },
+            { name: "ElysiumMaps", subs: 32, score: 9.2, votes: 12401, position: 3, avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Elysium", medals: ["🔥 Trending", "💎 Elite"] },
+            { name: "VoidX", subs: 11, score: 9.0, votes: 3950, position: 4, avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Void", medals: ["⭐ Legendary"] },
+            { name: "Kenji_MC", subs: 15, score: 8.8, votes: 5210, position: 5, avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Kenji", medals: ["🥇 Master Builder"] }
+        ];
+
+        // Global Orchestration Initialization Setup Routine
+        window.addEventListener('DOMContentLoaded', () => {
+            initCategoryDropdowns();
+            renderCategoriesShowcase();
+            renderRankingsGrid(builds);
+            renderBuildersLeaderboard();
+            renderUserSubmissionsGrid();
+        });
+
+        // Tab routing switching component logic framework
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if(activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('block');
+            }
+            
+            // Adjust visual classes in header menu navigation stream
+            document.querySelectorAll('.navigation-item').forEach(el => el.classList.remove('nav-link-active'));
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) activeNav.classList.add('nav-link-active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize lists components dropdown criteria configuration
+        function initCategoryDropdowns() {
+            const filterDrop = document.getElementById('filter-category');
+            const submitDrop = document.getElementById('submit-category');
+            
+            categories.forEach(cat => {
+                const opt1 = new Option(`${cat.emoji} ${cat.label}`, cat.id);
+                const opt2 = new Option(`${cat.emoji} ${cat.label}`, cat.id);
+                if(filterDrop) filterDrop.add(opt1);
+                if(submitDrop) submitDrop.add(opt2);
+            });
+        }
+
+        // Render landing category block showcase matrices
+        function renderCategoriesShowcase() {
+            const wrapper = document.getElementById('categories-showcase');
+            if(!wrapper) return;
+            
+            categories.slice(0, 5).forEach(cat => {
+                const div = document.createElement('div');
+                div.className = "bg-mcb-card hover:bg-mcb-card/80 border border-white/5 p-4 rounded-xl text-center transition cursor-pointer hover:border-mcb-accent/40 group";
+                div.onclick = () => {
+                    const filterDrop = document.getElementById('filter-category');
+                    if(filterDrop) filterDrop.value = cat.id;
+                    switchTab('rankings');
+                    applyFilters();
+                };
+                div.innerHTML = `
+                    <div class="text-2xl mb-1.5 group-hover:scale-110 transition duration-300">${cat.emoji}</div>
+                    <div class="text-xs font-bold text-white">${cat.label}</div>
+                `;
+                wrapper.appendChild(div);
+            });
+        }
+
+        // Render Comprehensive Tier Split Grid System List view module
+        function renderRankingsGrid(dataset) {
+            const container = document.getElementById('rankings-tier-container');
+            if(!container) return;
+            container.innerHTML = '';
+
+            if(dataset.length === 0) {
+                container.innerHTML = `<div class="text-center py-20 text-slate-500 text-sm font-semibold"><i class="fa-solid fa-folder-open text-3xl mb-3 block"></i> No architectural builds match standard filter parameter requests.</div>`;
+                return;
+            }
+
+            tiers.forEach(tier => {
+                const tierBuilds = dataset.filter(b => b.tier === tier.name);
+                if(tierBuilds.length === 0) return; // Hide layout if empty block profile
+
+                const tierSection = document.createElement('div');
+                tierSection.className = "space-y-4";
+                tierSection.innerHTML = `
+                    <div class="flex items-center space-x-3 border-b border-white/10 pb-2">
+                        <div class="px-3.5 py-1 text-xs font-black rounded-lg border uppercase tracking-wider ${tier.colorClass} tier-badge">${tier.name} TIER</div>
+                        <span class="text-xs font-medium text-slate-500">${tierBuilds.length} Architectural units validated</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                `;
+
+                const grid = tierSection.querySelector('.grid');
+                tierBuilds.forEach(build => {
+                    const catObj = categories.find(c => c.id === build.category) || { emoji: "🏰", label: "General" };
+                    const card = document.createElement('div');
+                    card.className = "bg-mcb-card rounded-2xl border border-white/5 overflow-hidden shadow-lg group hover:border-white/10 transition duration-300 flex flex-col justify-between";
+                    card.innerHTML = `
+                        <div class="relative overflow-hidden cursor-pointer h-44" onclick="openBuildDetail(${build.id})">
+                            <img src="${build.img}" class="w-full h-full object-cover group-hover:scale-[1.03] transition duration-500" alt="${build.title}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-mcb-card/90 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-3 left-3 text-[10px] bg-mcb-bg/80 text-mcb-accent px-2 py-0.5 rounded font-bold border border-white/10 uppercase tracking-wide">${catObj.emoji} ${catObj.label}</span>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between space-y-3">
+                            <div>
+                                <h4 class="font-extrabold text-base text-white tracking-tight hover:text-mcb-accent transition cursor-pointer truncate" onclick="openBuildDetail(${build.id})">${build.title}</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Architect: <span class="text-slate-200 font-semibold cursor-pointer hover:underline" onclick="switchTab('profile')">${build.builder}</span> &bull; v${build.version}</p>
+                            </div>
+                            <div class="flex items-center justify-between bg-mcb-bg/50 px-3 py-2 rounded-xl border border-white/5 text-xs">
+                                <div class="flex items-center space-x-1"><i class="fa-solid fa-star text-amber-400"></i> <span class="font-bold text-white">${build.score}</span></div>
+                                <div class="text-slate-500 font-medium text-[11px]">${build.votes} Validations</div>
+                            </div>
+                            <button onclick="openBuildDetail(${build.id})" class="w-full py-2 bg-white/5 border border-white/10 hover:border-mcb-accent hover:bg-mcb-accent/10 rounded-xl text-xs font-bold text-slate-200 hover:text-white transition">View Build Schematic</button>
+                        </div>
+                     deflection`;
+                    grid.appendChild(card);
+                });
+
+                container.appendChild(tierSection);
+            });
+        }
+
+        // Apply filters searching logic array pipeline processing updates
+        function applyFilters() {
+            const query = document.getElementById('filter-search').value.toLowerCase();
+            const category = document.getElementById('filter-category').value;
+            const sort = document.getElementById('filter-sort').value;
+
+            let filtered = builds.filter(b => {
+                const matchQuery = b.title.toLowerCase().includes(query) || b.builder.toLowerCase().includes(query) || b.version.includes(query);
+                const matchCategory = (category === 'all') || (b.category === category);
+                return matchQuery && matchCategory;
+            });
+
+            if(sort === 'rating') filtered.sort((a,b) => b.score - a.score);
+            if(sort === 'votes') filtered.sort((a,b) => b.votes - a.votes);
+            if(sort === 'recent') filtered.sort((a,b) => b.id - a.id); // Dummy sequencing logic index
+
+            renderRankingsGrid(filtered);
+        }
+
+        // Bind interactive filter real time processing searching functionality stream
+        const searchInput = document.getElementById('filter-search');
+        if(searchInput) searchInput.addEventListener('input', applyFilters);
+
+        // Open Individual Build Schematic Details View Page Frame
+        function openBuildDetail(buildId = 1) {
+            const build = builds.find(b => b.id === buildId) || builds[0];
+            const catObj = categories.find(c => c.id === build.category) || { emoji: "🏰", label: "General" };
+
+            document.getElementById('detail-main-img').src = build.img;
+            document.getElementById('detail-tier').innerText = `${build.tier} TIER`;
+            document.getElementById('detail-category').innerText = `${catObj.emoji} ${catObj.label}`;
+            document.getElementById('detail-title').innerText = build.title;
+            document.getElementById('detail-desc').innerText = build.desc;
+            document.getElementById('detail-score').innerText = build.score;
+            document.getElementById('detail-votes').innerText = `Based on ${build.votes} user validations`;
+            document.getElementById('detail-builder').innerText = build.builder;
+            document.getElementById('detail-version').innerText = build.version;
+
+            // Configure color matrix design layout style variants
+            const tierObj = tiers.find(t => t.name === build.tier) || tiers[0];
+            const tierBadge = document.getElementById('detail-tier');
+            tierBadge.className = `absolute top-4 right-4 text-white font-black px-4 py-2 rounded-xl text-lg tracking-wider tier-badge`;
+            if(build.tier === 'S+') tierBadge.style.backgroundColor = '#FF4554';
+            else if(build.tier === 'S') tierBadge.style.backgroundColor = '#FF7676';
+            else if(build.tier === 'A') tierBadge.style.backgroundColor = '#FFAA47';
+            else tierBadge.style.backgroundColor = '#47C2FF';
+
+            switchTab('build-detail');
+        }
+
+        // Render Global Builders Rankings Database Table Module
+        function renderBuildersLeaderboard() {
+            const tbody = document.getElementById('builders-leaderboard-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            builders.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/[0.02] transition";
+                
+                let rankDisplay = `<span class="font-black text-slate-400">${b.position}</span>`;
+                if(b.position === 1) rankDisplay = `<span class="text-xl">👑</span>`;
+                if(b.position === 2) rankDisplay = `<span class="text-xl">🥈</span>`;
+                if(b.position === 3) rankDisplay = `<span class="text-xl">🥉</span>`;
+
+                let badgesHtml = '';
+                b.medals.forEach(m => {
+                    badgesHtml += `<span class="inline-block bg-white/5 text-slate-300 border border-white/5 text-[10px] font-bold px-2 py-0.5 rounded mr-1">${m}</span>`;
+                });
+
+                tr.innerHTML = `
+                    <td class="p-4 text-center font-bold">${rankDisplay}</td>
+                    <td class="p-4 font-semibold text-white flex items-center space-x-3 cursor-pointer" onclick="switchTab('profile')">
+                        <img src="${b.avatar}" class="w-8 h-8 rounded-lg bg-mcb-card p-0.5 border border-white/10" alt="Av">
+                        <span class="hover:text-mcb-accent transition">${b.name}</span>
+                    </td>
+                    <td class="p-4 text-center font-bold text-slate-300">${b.subs} Projects</td>
+                    <td class="p-4 text-center font-black text-mcb-accent">${b.score}</td>
+                    <td class="p-4 text-center text-xs text-slate-400">${b.votes.toLocaleString()}</td>
+                    <td class="p-4">${badgesHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render User Submissions mock tracking lists profiles portfolio
+        function renderUserSubmissionsGrid() {
+            const grid = document.getElementById('user-builds-grid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            const userBuilds = builds.filter(b => b.builder === 'Notch_Legacy');
+            userBuilds.forEach(build => {
+                const div = document.createElement('div');
+                div.className = "bg-mcb-card border border-white/5 rounded-2xl overflow-hidden p-3 flex space-x-3 hover:border-white/10 transition";
+                div.innerHTML = `
+                    <img src="${build.img}" class="w-24 h-24 object-cover rounded-xl flex-shrink-0" alt="thumb">
+                    <div class="flex-grow min-w-0 flex flex-col justify-between py-0.5">
+                        <div>
+                            <h4 class="font-bold text-sm text-white truncate hover:text-mcb-accent cursor-pointer" onclick="openBuildDetail(${build.id})">${build.title}</h4>
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold mt-0.5">${build.category} &bull; v${build.version}</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-black text-mcb-accent bg-mcb-accent/10 px-2 py-0.5 border border-mcb-accent/20 rounded text-[10px]">${build.tier} Tier</span>
+                            <span class="text-slate-500 font-semibold text-[11px]"><i class="fa-solid fa-star text-amber-400 mr-0.5"></i> ${build.score}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
