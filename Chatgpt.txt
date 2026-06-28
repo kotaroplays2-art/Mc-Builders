@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mc Builders</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#0B0F14;
+color:white;
+overflow-x:hidden;
+}
+
+header{
+position:fixed;
+top:0;
+width:100%;
+background:rgba(15,20,30,.7);
+backdrop-filter:blur(12px);
+padding:20px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:1000;
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+color:#00C8FF;
+}
+
+nav{
+display:flex;
+gap:30px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+transition:.3s;
+}
+
+nav a:hover{
+color:#00C8FF;
+}
+
+.hero{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:0 20px;
+background:
+linear-gradient(rgba(11,15,20,.75),rgba(11,15,20,.9)),
+url("https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1600&q=80");
+background-size:cover;
+background-position:center;
+}
+
+.hero-content h1{
+font-size:80px;
+font-weight:900;
+margin-bottom:15px;
+}
+
+.hero-content p{
+font-size:22px;
+color:#c8c8c8;
+margin-bottom:30px;
+}
+
+.btn{
+padding:15px 35px;
+background:#00C8FF;
+border:none;
+border-radius:12px;
+color:black;
+font-weight:700;
+font-size:17px;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 25px rgba(0,200,255,.5);
+}
+
+.section{
+padding:100px 8%;
+}
+
+.section-title{
+font-size:40px;
+margin-bottom:40px;
+font-weight:800;
+}
+
+.categories{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.category-card{
+background:#151B22;
+border:1px solid rgba(255,255,255,.05);
+padding:25px;
+border-radius:18px;
+transition:.3s;
+cursor:pointer;
+}
+
+.category-card:hover{
+transform:translateY(-5px);
+border-color:#00C8FF;
+}
+
+.category-card h3{
+font-size:22px;
+}
+
+.rankings{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:25px;
+}
+
+.build-card{
+background:#151B22;
+border-radius:18px;
+overflow:hidden;
+transition:.3s;
+border:1px solid rgba(255,255,255,.05);
+}
+
+.build-card:hover{
+transform:translateY(-6px);
+border-color:#00C8FF;
+}
+
+.build-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.build-info{
+padding:20px;
+}
+
+.tier{
+display:inline-block;
+background:#00C8FF;
+color:black;
+font-weight:800;
+padding:5px 12px;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+.build-info h3{
+margin-bottom:10px;
+}
+
+.meta{
+color:#aaa;
+font-size:14px;
+margin-bottom:8px;
+}
+
+.view-btn{
+margin-top:15px;
+width:100%;
+padding:12px;
+background:#00C8FF;
+border:none;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+}
+
+footer{
+padding:40px;
+text-align:center;
+color:#999;
+border-top:1px solid rgba(255,255,255,.05);
+}
+
+.search{
+width:100%;
+max-width:700px;
+margin:0 auto 50px;
+}
+
+.search input{
+width:100%;
+padding:16px;
+background:#151B22;
+border:none;
+border-radius:12px;
+color:white;
+font-size:16px;
+}
+
+@media(max-width:768px){
+
+.hero-content h1{
+font-size:50px;
+}
+
+.hero-content p{
+font-size:18px;
+}
+
+nav{
+display:none;
+}
+
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">Mc Builders</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#">Rankings</a>
+<a href="#">Builders</a>
+<a href="#">Submit Build</a>
+<a href="#">Discord</a>
+<a href="#">Login</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Mc Builders</h1>
+<p>The Ultimate Minecraft Build Ranking</p>
+<button class="btn">Explore Rankings</button>
+</div>
+</section>
+
+<section class="section">
+
+<h2 class="section-title">Categories</h2>
+
+<div class="categories">
+
+<div class="category-card"><h3>🏰 Medieval</h3></div>
+<div class="category-card"><h3>🏙 Modern</h3></div>
+<div class="category-card"><h3>🌸 Japanese</h3></div>
+<div class="category-card"><h3>🕌 Fantasy</h3></div>
+<div class="category-card"><h3>🏛 Roman</h3></div>
+<div class="category-card"><h3>🌲 Nature</h3></div>
+<div class="category-card"><h3>🏜 Desert</h3></div>
+<div class="category-card"><h3>❄ Snow</h3></div>
+<div class="category-card"><h3>🏝 Tropical</h3></div>
+<div class="category-card"><h3>⚔ PvP Arenas</h3></div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">Top Ranked Builds</h2>
+
+<div class="search">
+<input placeholder="Search builds, builders, categories...">
+</div>
+
+<div class="rankings">
+
+<div class="build-card">
+<img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23" alt="">
+<div class="build-info">
+<div class="tier">S+</div>
+<h3>Imperial Kingdom</h3>
+<div class="meta">Builder: Kotaro</div>
+<div class="meta">Version: 1.21</div>
+<div class="meta">Category: Medieval</div>
+<div class="meta">Rating: 9.9 ⭐</div>
+<div class="meta">Votes: 2,514</div>
+<button class="view-btn">View Build</button>
+</div>
+</div>
+
+<div class="build-card">
+<img src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc" alt="">
+<div class="build-info">
+<div class="tier">S</div>
+<h3>Tokyo City</h3>
+<div class="meta">Builder: Akira</div>
+<div class="meta">Version: 1.21</div>
+<div class="meta">Category: Japanese</div>
+<div class="meta">Rating: 9.5 ⭐</div>
+<div class="meta">Votes: 1,827</div>
+<button class="view-btn">View Build</button>
+</div>
+</div>
+
+<div class="build-card">
+<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="">
+<div class="build-info">
+<div class="tier">A</div>
+<h3>Fantasy Spawn</h3>
+<div class="meta">Builder: NovaBuilds</div>
+<div class="meta">Version: 1.20</div>
+<div class="meta">Category: Spawn</div>
+<div class="meta">Rating: 8.8 ⭐</div>
+<div class="meta">Votes: 943</div>
+<button class="view-btn">View Build</button>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 Mc Builders • The Ultimate Minecraft Build Ranking
+</footer>
+
+</body>
+</html>
